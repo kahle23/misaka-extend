@@ -3,12 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.kahlkn</groupId>
+    <groupId>io.github.kahle23</groupId>
     <artifactId>misaka-extend</artifactId>
-    <version>1.0.0.20210917f.beta</version>
+    <version>1.0.0.20210919.beta</version>
     <packaging>jar</packaging>
     <name>Misaka extend</name>
-    <url>https://github.com/kahlkn/misaka-extend</url>
+    <url>https://github.com/kahle23/misaka-extend</url>
     <description>Misaka extend.</description>
 
     <properties>
@@ -28,15 +28,15 @@
     <developers>
         <developer>
             <name>Kahle Kernel</name>
-            <email>kahlkn@gmail.com</email>
-            <url>https://github.com/kahlkn</url>
+            <email>kahle23@163.com</email>
+            <url>https://github.com/kahle23</url>
         </developer>
     </developers>
 
     <scm>
-        <url>https://github.com/kahlkn/misaka-extend</url>
-        <connection>scm:git:https://github.com/kahlkn/misaka-extend.git</connection>
-        <developerConnection>https://github.com/kahlkn</developerConnection>
+        <url>https://github.com/kahle23/misaka-extend</url>
+        <connection>scm:git:https://github.com/kahle23/misaka-extend.git</connection>
+        <developerConnection>https://github.com/kahle23</developerConnection>
     </scm>
 
     <distributionManagement>
@@ -57,23 +57,23 @@
 
         <!-- ///// begin artoria //// -->
         <dependency>
-            <groupId>com.github.kahlkn</groupId>
+            <groupId>io.github.kahle23</groupId>
             <artifactId>artoria</artifactId>
-            <version>1.0.0.20210917f.beta</version>
+            <version>1.0.0.20210919.beta</version>
         </dependency>
 
         <dependency>
-            <groupId>com.github.kahlkn</groupId>
+            <groupId>io.github.kahle23</groupId>
             <artifactId>artoria-extend</artifactId>
-            <version>1.0.0.20210917f.beta</version>
+            <version>1.0.0.20210919.beta</version>
         </dependency>
         <!-- ///// end artoria //// -->
 
         <!-- ///// begin misaka //// -->
         <dependency>
-            <groupId>com.github.kahlkn</groupId>
+            <groupId>io.github.kahle23</groupId>
             <artifactId>misaka</artifactId>
-            <version>1.0.0.20210917f.beta</version>
+            <version>1.0.0.20210919.beta</version>
         </dependency>
         <!-- ///// end misaka //// -->
 
