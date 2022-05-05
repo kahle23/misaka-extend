@@ -36,8 +36,8 @@ public class DingTalkServiceTest {
     @Test
     public void test3() {
         JsonUtils.setJsonProvider(new FastJsonProvider());
-        Dict spaces = dingTalkService.getSpaces(Dict.of("unionId", "m7gLx4qO4uPyGAiEiE",
-                "spaceType", "org", "nextToken", null, "maxResults", 50));
+        Dict spaces = dingTalkService.getSpaces(Dict.of("unionId", "m7gLx4qO4uPyGAiEiE")
+                .set("spaceType", "org").set("nextToken", null).set("maxResults", 50));
         // spaceId = 2016270227
         log.info("{}", JSON.toJSONString(spaces, true));
     }
@@ -45,16 +45,16 @@ public class DingTalkServiceTest {
     @Test
     public void test4() {
         JsonUtils.setJsonProvider(new FastJsonProvider());
-        Dict spaces = dingTalkService.getFiles(Dict.of("spaceId", "4906264950",
-                "unionId", "4WRZpNfA4G95wwiEiE", "parentId", "39438616813", "nextToken", "", "maxResults", 50));
+        Dict spaces = dingTalkService.getFiles(Dict.of("spaceId", "4906264950")
+                .set("unionId", "4WRZpNfA4G95wwiEiE").set("parentId", "39438616813").set("nextToken", "").set("maxResults", 50));
         log.info("{}", JSON.toJSONString(spaces, true));
     }
 
     @Test
     public void test5() {
         JsonUtils.setJsonProvider(new FastJsonProvider());
-        Dict downloadInfo = dingTalkService.downloadInfo(Dict.of("spaceId", "4906264950"
-                , "fileId", "39438724473","unionId", "4WRZpNfA4GX5wwiEiE"));
+        Dict downloadInfo = dingTalkService.downloadInfo(Dict.of("spaceId", "4906264950")
+                .set("fileId", "39438724473").set("unionId", "4WRZpNfA4GX5wwiEiE"));
         log.info("{}", JSON.toJSONString(downloadInfo, true));
     }
 

@@ -1,12 +1,12 @@
 package misaka.alibaba.dingtalk;
 
+import artoria.bot.MessageBot;
 import artoria.codec.Base64Utils;
 import artoria.crypto.Hmac;
 import artoria.crypto.KeyUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
 import artoria.net.*;
-import artoria.robot.MessageRobot;
 import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
@@ -25,7 +25,7 @@ import static artoria.common.Constants.*;
  * The ding talk robot.
  * @author Kahle
  */
-public class DingTalkRobot implements MessageRobot {
+public class DingTalkRobot implements MessageBot {
     private static Logger log = LoggerFactory.getLogger(DingTalkRobot.class);
     private final HttpClient httpClient;
     private final String webHook;

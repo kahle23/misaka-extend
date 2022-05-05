@@ -1,5 +1,6 @@
 package misaka.tencent.work.wx.robot;
 
+import artoria.bot.MessageBot;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
 import artoria.lang.Dict;
@@ -7,7 +8,6 @@ import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
-import artoria.robot.MessageRobot;
 import artoria.util.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import static artoria.common.Constants.UTF_8;
  * Work WeChat message robot.
  * @author Kahle
  */
-public class WxWorkMessageRobot implements MessageRobot {
+public class WxWorkMessageRobot implements MessageBot {
     private static Logger log = LoggerFactory.getLogger(WxWorkMessageRobot.class);
     private final String url;
 

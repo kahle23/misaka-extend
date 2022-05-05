@@ -1,6 +1,6 @@
 package misaka.tencent.work.wx.robot;
 
-import artoria.robot.MessageRobot;
+import artoria.bot.MessageBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,10 +21,10 @@ public class MessageRobotAutoConfiguration {
     private String key;
 
     @Bean
-    public MessageRobot wxWorkMessageRobot() {
-        MessageRobot messageRobot = new WxWorkMessageRobot(key);
+    public MessageBot wxWorkMessageRobot() {
+        MessageBot messageBot = new WxWorkMessageRobot(key);
         log.info("Wx-Work robot init success. ");
-        return messageRobot;
+        return messageBot;
     }
 
 }
