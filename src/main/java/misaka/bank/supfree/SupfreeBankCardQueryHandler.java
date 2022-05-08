@@ -1,12 +1,16 @@
-package misaka.bank;
+package misaka.bank.supfree;
 
 import artoria.exception.ExceptionUtils;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
+import artoria.query.AbstractQueryHandler;
 import artoria.util.CollectionUtils;
+import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
+import misaka.bank.BankCard;
+import misaka.bank.BankCardQuery;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,14 +18,16 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 import static artoria.common.Constants.*;
 
 /**
  * Bank card information provider based on website "bankcard.supfree.net".
  * @author Kahle
  */
-public class SupfreeNetBankCardIssuerProvider implements BankCardIssuerProvider {
-    private static Logger log = LoggerFactory.getLogger(SupfreeNetBankCardIssuerProvider.class);
+public class SupfreeBankCardQueryHandler extends AbstractQueryHandler {
+    private static Logger log = LoggerFactory.getLogger(SupfreeBankCardQueryHandler.class);
 
     private String cutoutValue(String data) {
         if (StringUtils.isBlank(data)) { return null; }
@@ -33,8 +39,12 @@ public class SupfreeNetBankCardIssuerProvider implements BankCardIssuerProvider 
     }
 
     @Override
-    public BankCardIssuer issuerInfo(String bankCardNumber) {
+    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+        String bankCardNumber = null;
         try {
+            isSupport(new Class[]{BankCard.class}, clazz);
+            BankCardQuery bankCardIssuerQuery = (BankCardQuery) input;
+            bankCardNumber = bankCardIssuerQuery.getBankCardNumber();
             HttpRequest request = new HttpRequest();
             request.setMethod(HttpMethod.GET);
             request.setUrl("https://bankcard.supfree.net/tongku.asp?cardno=" + bankCardNumber);
@@ -66,14 +76,15 @@ public class SupfreeNetBankCardIssuerProvider implements BankCardIssuerProvider 
                 bankCardNumberLength = bankCardNumberLength.substring(ZERO, endIndex);
             }
 
-            BankCardIssuer bankCardIssuer = new BankCardIssuer();
-            bankCardIssuer.setBankName(bankName);
-            bankCardIssuer.setOrganizationCode(organizationCode);
-            bankCardIssuer.setBankCardName(bankCardName);
-            bankCardIssuer.setBankCardType(bankCardType);
-            bankCardIssuer.setIssuerIdentificationNumber(issuerIdentificationNumber);
-            bankCardIssuer.setBankCardNumberLength(bankCardNumberLength);
-            return bankCardIssuer;
+            BankCard bankCard = new BankCard();
+            bankCard.setBankCardNumber(bankCardNumber);
+            bankCard.setBankName(bankName);
+            bankCard.setOrganizationCode(organizationCode);
+            bankCard.setBankCardName(bankCardName);
+            bankCard.setBankCardType(bankCardType);
+            bankCard.setIssuerIdentificationNumber(issuerIdentificationNumber);
+            bankCard.setBankCardNumberLength(bankCardNumberLength);
+            return ObjectUtils.cast(bankCard);
         }
         catch (Exception e) {
             log.info(

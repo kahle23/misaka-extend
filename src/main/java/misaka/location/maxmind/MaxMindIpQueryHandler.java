@@ -1,42 +1,53 @@
-package misaka.location.ip;
+package misaka.location.maxmind;
 
 import artoria.exception.ExceptionUtils;
+import artoria.query.AbstractQueryHandler;
+import artoria.util.ObjectUtils;
+import artoria.util.StringUtils;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.*;
+import misaka.location.ip.IpQuery;
+import misaka.location.ipapi.IpApiIpLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.InetAddress;
+import java.util.Map;
 
 /**
  * Network physical address provider by MaxMind GeoIP.
  * @see <a href="https://dev.maxmind.com/geoip/">MaxMind GeoIP</a>
  * @author Kahle
  */
-public class MaxMindIpGeolocationProvider implements IpGeolocationProvider {
-    private static Logger log = LoggerFactory.getLogger(MaxMindIpGeolocationProvider.class);
+public class MaxMindIpQueryHandler extends AbstractQueryHandler {
+    private static Logger log = LoggerFactory.getLogger(MaxMindIpQueryHandler.class);
     private final File providerDbPath;
+    private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class };
 
-    public MaxMindIpGeolocationProvider(String providerDbPathStr) {
+    public MaxMindIpQueryHandler(String providerDbPathStr) {
 
         this(new File(providerDbPathStr));
     }
 
-    public MaxMindIpGeolocationProvider(File providerDbPath) {
+    public MaxMindIpQueryHandler(File providerDbPath) {
         // http://dev.maxmind.com/geoip/geoip2/geolite2/
         this.providerDbPath = providerDbPath;
         log.info("MaxMind Ip Geolocation Provider database path: {}", providerDbPath);
     }
 
     @Override
-    public IpGeolocation info(String ipAddress) {
+    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
         try {
+            isSupport(supportClasses, clazz);
+            IpQuery ipQuery = (IpQuery) input;
+            String ipAddress = ipQuery.getIpAddress();
+            String language = ipQuery.getLanguage();
 //            String dbPath = "e:\\GeoLite2-City.mmdb";
             // 语言：de、pt-BR、fr、en、ru、zh-CN、es、ja
-            String lang = "en";
+            if (StringUtils.isBlank(language)) { language = "en"; }
             InetAddress inetAddress = InetAddress.getByName(ipAddress);
             DatabaseReader dbReader = new DatabaseReader.Builder(providerDbPath).build();
             CityResponse response = dbReader.city(inetAddress);
@@ -47,12 +58,12 @@ public class MaxMindIpGeolocationProvider implements IpGeolocationProvider {
             Postal postal = response.getPostal();
             Location location = response.getLocation();
 
-            IpGeolocation ipGeolocation = new IpGeolocation();
-            ipGeolocation.setCountry(country.getNames().get(lang));
+            IpApiIpLocation ipGeolocation = new IpApiIpLocation();
+            ipGeolocation.setCountry(country.getNames().get(language));
             ipGeolocation.setCountryCode(country.getIsoCode());
-            ipGeolocation.setRegion(subdivision.getNames().get(lang));
+            ipGeolocation.setRegion(subdivision.getNames().get(language));
             ipGeolocation.setRegionCode(subdivision.getIsoCode());
-            ipGeolocation.setCity(city.getNames().get(lang));
+            ipGeolocation.setCity(city.getNames().get(language));
 //            ipGeolocation.setCityCode();
 //            ipGeolocation.setDistrict();
 //            ipGeolocation.setDistrictCode();
@@ -62,7 +73,7 @@ public class MaxMindIpGeolocationProvider implements IpGeolocationProvider {
             ipGeolocation.setLongitude(BigDecimal.valueOf(location.getLongitude()));
 //            ipGeolocation.setElevation();
 //            ipGeolocation.set;
-            return ipGeolocation;
+            return ObjectUtils.cast(ipGeolocation);
         }
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);

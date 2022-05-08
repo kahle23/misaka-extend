@@ -9,11 +9,10 @@ misaka.tencent.wx.open.WxOpenAutoConfiguration,\
 misaka.tencent.wx.pay.WxPayAutoConfiguration,\
 misaka.app.push.JPushAutoConfiguration,\
 misaka.bank.BankCardIssuerAutoConfiguration,\
-misaka.company.CompanyAutoConfiguration,\
+misaka.company.yonyou.YonyouCompanyAutoConfiguration,\
 misaka.device.DeviceAutoConfiguration,\
 misaka.tencent.work.wx.robot.MessageRobotAutoConfiguration,\
-misaka.location.ip.IpGeolocationAutoConfiguration,\
-misaka.location.GeolocationAutoConfiguration
+misaka.location.ipapi.IpApiAutoConfiguration
 
 
 

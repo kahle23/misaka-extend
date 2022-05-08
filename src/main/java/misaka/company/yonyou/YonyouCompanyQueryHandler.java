@@ -1,4 +1,4 @@
-package misaka.company;
+package misaka.company.yonyou;
 
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
@@ -7,7 +7,10 @@ import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
+import artoria.query.AbstractQueryHandler;
 import artoria.util.*;
+import misaka.company.Company;
+import misaka.company.CompanyQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,18 +27,21 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
-public class YonyouCompanyProvider implements CompanyProvider {
+/**
+ * Yonyou cloud (https://yonyoucloud.com).
+ */
+public class YonyouCompanyQueryHandler extends AbstractQueryHandler {
     private static final String BASE_INFO_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/baseinfo/baseinfoV3?name=%s";
     private static final String SEARCH_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/Search/search?word=%s";
     private static final String AUTHORIZATION_HEADER = "authoration";
     private static final String API_CODE_HEADER = "apicode";
     private static final String FAILURE = "-1";
-    private static Logger log = LoggerFactory.getLogger(YonyouCompanyProvider.class);
+    private static Logger log = LoggerFactory.getLogger(YonyouCompanyQueryHandler.class);
     private String baseInfoApiCode;
     private String searchApiCode;
     private Integer timeout;
 
-    public YonyouCompanyProvider(String baseInfoApiCode, String searchApiCode, Integer timeout) {
+    public YonyouCompanyQueryHandler(String baseInfoApiCode, String searchApiCode, Integer timeout) {
         Assert.notBlank(baseInfoApiCode, "Parameter \"baseInfoApiCode\" must not blank. ");
         Assert.notBlank(searchApiCode, "Parameter \"searchApiCode\" must not blank. ");
         this.baseInfoApiCode = baseInfoApiCode;
@@ -89,8 +95,11 @@ public class YonyouCompanyProvider implements CompanyProvider {
     }
 
     @Override
-    public Company info(String name) {
+    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/3cd7c462-04d3-4878-b498-0f1e4b3219c5_true.html
+        isSupport(new Class[]{ Company.class }, clazz);
+        CompanyQuery companyQuery = (CompanyQuery) input;
+        String name = companyQuery.getName();
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         try {
             log.info("---- Begin \"info\" ----");
@@ -112,7 +121,7 @@ public class YonyouCompanyProvider implements CompanyProvider {
             Map<String, Object> resultMap = parseResult(bodyAsString);
             if (MapUtils.isEmpty(resultMap)) { return logOutput(null); }
             // Handle result.
-            return logOutput(build(resultMap));
+            return ObjectUtils.cast(logOutput(build(resultMap)));
         }
         catch (Exception e) {
             log.info("Error message: {}", e.getMessage());
@@ -123,9 +132,13 @@ public class YonyouCompanyProvider implements CompanyProvider {
         }
     }
 
+
     @Override
-    public List<Company> search(String name) {
+    public <T> List<T> search(Map<?, ?> properties, Object input, Class<T> clazz) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/04ef434b-0170-4287-ba45-ec317fac88a3_true.html
+        isSupport(new Class[]{ Company.class }, clazz);
+        CompanyQuery companyQuery = (CompanyQuery) input;
+        String name = companyQuery.getName();
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         try {
             log.info("---- Begin \"search\" ----");
@@ -146,9 +159,9 @@ public class YonyouCompanyProvider implements CompanyProvider {
             String bodyAsString = httpResponse.getBodyAsString(UTF_8);
             Map<String, Object> resultMap = parseResult(bodyAsString);
             List<Company> resultList = emptyList();
-            if (MapUtils.isEmpty(resultMap)) { return logOutput(resultList); }
+            if (MapUtils.isEmpty(resultMap)) { return ObjectUtils.cast(logOutput(resultList)); }
             Iterable items = (Iterable) resultMap.get("items");
-            if (items == null) { return logOutput(resultList); }
+            if (items == null) { return ObjectUtils.cast(logOutput(resultList)); }
             // Handle result.
             resultList = new ArrayList<Company>();
             for (Object item : items) {
@@ -156,7 +169,7 @@ public class YonyouCompanyProvider implements CompanyProvider {
                 Map<String, Object> beanMap = BeanUtils.beanToMap(item);
                 resultList.add(build(beanMap));
             }
-            return logOutput(resultList);
+            return ObjectUtils.cast(logOutput(resultList));
         }
         catch (Exception e) {
             log.info("Error message: {}", e.getMessage());

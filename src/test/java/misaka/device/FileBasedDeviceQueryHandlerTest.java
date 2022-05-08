@@ -1,6 +1,7 @@
 package misaka.device;
 
 import artoria.exception.ExceptionUtils;
+import artoria.query.QueryUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,14 +11,16 @@ import org.slf4j.LoggerFactory;
 import static java.lang.Boolean.TRUE;
 
 @Ignore
-public class DeviceUtilsTest {
-    private static Logger log = LoggerFactory.getLogger(DeviceUtilsTest.class);
+public class FileBasedDeviceQueryHandlerTest {
+    private static Logger log = LoggerFactory.getLogger(FileBasedDeviceQueryHandlerTest.class);
 
     @Test
     public void test1() {
         try {
             new DeviceAutoConfiguration().afterPropertiesSet();
-            Device device = DeviceUtils.info("SM901", null);
+
+            DeviceQuery deviceQuery = new DeviceQuery("SM901");
+            Device device = QueryUtils.info(deviceQuery, Device.class);
             log.info(JSON.toJSONString(device, TRUE));
         }
         catch (Exception e) {
