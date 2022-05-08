@@ -8,7 +8,7 @@ misaka.tencent.wx.miniapp.WxMiniAppAutoConfiguration,\
 misaka.tencent.wx.open.WxOpenAutoConfiguration,\
 misaka.tencent.wx.pay.WxPayAutoConfiguration,\
 misaka.app.push.JPushAutoConfiguration,\
-misaka.bank.BankCardIssuerAutoConfiguration,\
+misaka.bank.supfree.SupfreeNetAutoConfiguration,\
 misaka.company.yonyou.YonyouCompanyAutoConfiguration,\
 misaka.device.DeviceAutoConfiguration,\
 misaka.tencent.work.wx.robot.MessageRobotAutoConfiguration,\

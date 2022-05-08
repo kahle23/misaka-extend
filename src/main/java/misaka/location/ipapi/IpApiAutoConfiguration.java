@@ -20,6 +20,7 @@ public class IpApiAutoConfiguration implements InitializingBean, DisposableBean 
     public void afterPropertiesSet() throws Exception {
         IpApiIpQueryHandler provider = new IpApiIpQueryHandler();
         QueryUtils.registerHandler(IpQuery.class, provider);
+        QueryUtils.registerHandler(IpQuery.class, "ipapi", provider);
     }
 
     @Override
