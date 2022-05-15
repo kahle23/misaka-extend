@@ -1,6 +1,6 @@
 package misaka.bank.supfree;
 
-import artoria.query.QueryUtils;
+import artoria.action.ActionUtils;
 import misaka.bank.BankCardQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +18,9 @@ public class SupfreeNetAutoConfiguration implements InitializingBean, Disposable
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        SupfreeBankCardQueryHandler provider = new SupfreeBankCardQueryHandler();
-        QueryUtils.registerHandler(BankCardQuery.class, provider);
-        QueryUtils.registerHandler(BankCardQuery.class, "supfree", provider);
+        SupfreeBankCardActionHandler provider = new SupfreeBankCardActionHandler();
+        ActionUtils.registerHandler(BankCardQuery.class, provider);
+        ActionUtils.registerHandler(BankCardQuery.class, "supfree", provider);
     }
 
     @Override

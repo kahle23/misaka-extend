@@ -1,6 +1,6 @@
 package misaka.location.ipapi;
 
-import artoria.query.QueryUtils;
+import artoria.action.ActionUtils;
 import misaka.location.ip.IpQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +18,9 @@ public class IpApiAutoConfiguration implements InitializingBean, DisposableBean 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        IpApiIpQueryHandler provider = new IpApiIpQueryHandler();
-        QueryUtils.registerHandler(IpQuery.class, provider);
-        QueryUtils.registerHandler(IpQuery.class, "ipapi", provider);
+        IpApiIpActionHandler provider = new IpApiIpActionHandler();
+        ActionUtils.registerHandler(IpQuery.class, provider);
+        ActionUtils.registerHandler(IpQuery.class, "ipapi", provider);
     }
 
     @Override

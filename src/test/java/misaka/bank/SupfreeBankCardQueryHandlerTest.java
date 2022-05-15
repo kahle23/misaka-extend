@@ -1,10 +1,10 @@
 package misaka.bank;
 
+import artoria.action.ActionUtils;
 import artoria.exchange.FastJsonProvider;
 import artoria.exchange.JsonUtils;
-import artoria.query.QueryUtils;
 import com.alibaba.fastjson.JSON;
-import misaka.bank.supfree.SupfreeBankCardQueryHandler;
+import misaka.bank.supfree.SupfreeBankCardActionHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,22 +17,22 @@ public class SupfreeBankCardQueryHandlerTest {
     @Test
     public void test1() {
         JsonUtils.setJsonProvider(new FastJsonProvider());
-        QueryUtils.registerHandler(BankCardQuery.class, new SupfreeBankCardQueryHandler());
+        ActionUtils.registerHandler(BankCardQuery.class, new SupfreeBankCardActionHandler());
 
         BankCardQuery cardQuery = new BankCardQuery("622600687501042806");
-        BankCard bankCard = QueryUtils.info(cardQuery, BankCard.class);
+        BankCard bankCard = ActionUtils.info(cardQuery, BankCard.class);
         log.info("{}", JSON.toJSONString(bankCard, true));
 
         cardQuery = new BankCardQuery("6230960288002899254");
-        BankCard bankCard1 = QueryUtils.info(cardQuery, BankCard.class);
+        BankCard bankCard1 = ActionUtils.info(cardQuery, BankCard.class);
         log.info("{}", JSON.toJSONString(bankCard1));
 
         cardQuery = new BankCardQuery("6217994000264606028");
-        BankCard bankCard2 = QueryUtils.info(cardQuery, BankCard.class);
+        BankCard bankCard2 = ActionUtils.info(cardQuery, BankCard.class);
         log.info("{}", JSON.toJSONString(bankCard2));
 
         cardQuery = new BankCardQuery("6230666046001759766");
-        BankCard bankCard3 = QueryUtils.info(cardQuery, BankCard.class);
+        BankCard bankCard3 = ActionUtils.info(cardQuery, BankCard.class);
         log.info("{}", JSON.toJSONString(bankCard3));
     }
 

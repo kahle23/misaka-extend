@@ -1,9 +1,9 @@
 package misaka.device;
 
+import artoria.action.ActionUtils;
 import artoria.crypto.EncryptUtils;
 import artoria.file.Csv;
 import artoria.io.IOUtils;
-import artoria.query.QueryUtils;
 import artoria.util.ClassLoaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class DeviceAutoConfiguration implements InitializingBean, DisposableBean
         Csv csv = new Csv();
         csv.setCharset(DEFAULT_ENCODING_NAME);
         csv.readFromByteArray(decrypt);
-        QueryUtils.registerHandler(DeviceQuery.class, new FileBasedDeviceQueryHandler(csv));
+        ActionUtils.registerHandler(DeviceQuery.class, new FileBasedDeviceActionHandler(csv));
 //        DeviceUtils.setDeviceProvider();
     }
 

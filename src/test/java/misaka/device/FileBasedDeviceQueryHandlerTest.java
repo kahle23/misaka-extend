@@ -1,7 +1,7 @@
 package misaka.device;
 
+import artoria.action.ActionUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.query.QueryUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class FileBasedDeviceQueryHandlerTest {
             new DeviceAutoConfiguration().afterPropertiesSet();
 
             DeviceQuery deviceQuery = new DeviceQuery("SM901");
-            Device device = QueryUtils.info(deviceQuery, Device.class);
+            Device device = ActionUtils.info(deviceQuery, Device.class);
             log.info(JSON.toJSONString(device, TRUE));
         }
         catch (Exception e) {

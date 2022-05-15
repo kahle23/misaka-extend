@@ -1,9 +1,10 @@
 package misaka.location.ipapi;
 
+import artoria.action.handler.AbstractActionHandler;
+import artoria.action.handler.InfoHandler;
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
 import artoria.net.HttpUtils;
-import artoria.query.AbstractQueryHandler;
 import artoria.util.MapUtils;
 import artoria.util.StringUtils;
 import artoria.util.TypeUtils;
@@ -21,8 +22,8 @@ import java.util.Map;
  * @see <a href="http://ip-api.com/">IP Geolocation API</a>
  * @author Kahle
  */
-public class IpApiIpQueryHandler extends AbstractQueryHandler {
-    private static Logger log = LoggerFactory.getLogger(IpApiIpQueryHandler.class);
+public class IpApiIpActionHandler extends AbstractActionHandler implements InfoHandler {
+    private static Logger log = LoggerFactory.getLogger(IpApiIpActionHandler.class);
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class, IpLocation.class};
 
     @Override

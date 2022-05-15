@@ -1,9 +1,10 @@
 package misaka.device;
 
+import artoria.action.handler.AbstractActionHandler;
+import artoria.action.handler.InfoHandler;
 import artoria.beans.BeanUtils;
 import artoria.data.RecombineUtils;
 import artoria.file.Csv;
-import artoria.query.AbstractQueryHandler;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 
@@ -11,10 +12,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class FileBasedDeviceQueryHandler extends AbstractQueryHandler {
+public class FileBasedDeviceActionHandler extends AbstractActionHandler implements InfoHandler {
     private Map<String, Device> deviceMap;
 
-    public FileBasedDeviceQueryHandler(Csv csv) {
+    public FileBasedDeviceActionHandler(Csv csv) {
         List<Device> deviceList = BeanUtils.mapToBeanInList(csv.toMapList(), Device.class);
         Map<String, Device> modelMap = RecombineUtils.listToMapBean(deviceList, "model");
         deviceMap = Collections.unmodifiableMap(modelMap);

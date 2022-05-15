@@ -1,7 +1,8 @@
 package misaka.location.maxmind;
 
+import artoria.action.handler.AbstractActionHandler;
+import artoria.action.handler.InfoHandler;
 import artoria.exception.ExceptionUtils;
-import artoria.query.AbstractQueryHandler;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
 import com.maxmind.geoip2.DatabaseReader;
@@ -22,17 +23,17 @@ import java.util.Map;
  * @see <a href="https://dev.maxmind.com/geoip/">MaxMind GeoIP</a>
  * @author Kahle
  */
-public class MaxMindIpQueryHandler extends AbstractQueryHandler {
-    private static Logger log = LoggerFactory.getLogger(MaxMindIpQueryHandler.class);
+public class MaxMindIpActionHandler extends AbstractActionHandler implements InfoHandler {
+    private static Logger log = LoggerFactory.getLogger(MaxMindIpActionHandler.class);
     private final File providerDbPath;
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class };
 
-    public MaxMindIpQueryHandler(String providerDbPathStr) {
+    public MaxMindIpActionHandler(String providerDbPathStr) {
 
         this(new File(providerDbPathStr));
     }
 
-    public MaxMindIpQueryHandler(File providerDbPath) {
+    public MaxMindIpActionHandler(File providerDbPath) {
         // http://dev.maxmind.com/geoip/geoip2/geolite2/
         this.providerDbPath = providerDbPath;
         log.info("MaxMind Ip Geolocation Provider database path: {}", providerDbPath);

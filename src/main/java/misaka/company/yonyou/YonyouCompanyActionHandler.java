@@ -1,5 +1,8 @@
 package misaka.company.yonyou;
 
+import artoria.action.handler.AbstractActionHandler;
+import artoria.action.handler.InfoHandler;
+import artoria.action.handler.SearchHandler;
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
@@ -7,7 +10,6 @@ import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
-import artoria.query.AbstractQueryHandler;
 import artoria.util.*;
 import misaka.company.Company;
 import misaka.company.CompanyQuery;
@@ -30,18 +32,18 @@ import static java.util.Collections.emptyMap;
 /**
  * Yonyou cloud (https://yonyoucloud.com).
  */
-public class YonyouCompanyQueryHandler extends AbstractQueryHandler {
+public class YonyouCompanyActionHandler extends AbstractActionHandler implements InfoHandler, SearchHandler {
     private static final String BASE_INFO_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/baseinfo/baseinfoV3?name=%s";
     private static final String SEARCH_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/Search/search?word=%s";
     private static final String AUTHORIZATION_HEADER = "authoration";
     private static final String API_CODE_HEADER = "apicode";
     private static final String FAILURE = "-1";
-    private static Logger log = LoggerFactory.getLogger(YonyouCompanyQueryHandler.class);
+    private static Logger log = LoggerFactory.getLogger(YonyouCompanyActionHandler.class);
     private String baseInfoApiCode;
     private String searchApiCode;
     private Integer timeout;
 
-    public YonyouCompanyQueryHandler(String baseInfoApiCode, String searchApiCode, Integer timeout) {
+    public YonyouCompanyActionHandler(String baseInfoApiCode, String searchApiCode, Integer timeout) {
         Assert.notBlank(baseInfoApiCode, "Parameter \"baseInfoApiCode\" must not blank. ");
         Assert.notBlank(searchApiCode, "Parameter \"searchApiCode\" must not blank. ");
         this.baseInfoApiCode = baseInfoApiCode;

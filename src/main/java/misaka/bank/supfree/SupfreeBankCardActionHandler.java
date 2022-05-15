@@ -1,11 +1,12 @@
 package misaka.bank.supfree;
 
+import artoria.action.handler.AbstractActionHandler;
+import artoria.action.handler.InfoHandler;
 import artoria.exception.ExceptionUtils;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
-import artoria.query.AbstractQueryHandler;
 import artoria.util.CollectionUtils;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
@@ -26,8 +27,8 @@ import static artoria.common.Constants.*;
  * Bank card information provider based on website "bankcard.supfree.net".
  * @author Kahle
  */
-public class SupfreeBankCardQueryHandler extends AbstractQueryHandler {
-    private static Logger log = LoggerFactory.getLogger(SupfreeBankCardQueryHandler.class);
+public class SupfreeBankCardActionHandler extends AbstractActionHandler implements InfoHandler {
+    private static Logger log = LoggerFactory.getLogger(SupfreeBankCardActionHandler.class);
 
     private String cutoutValue(String data) {
         if (StringUtils.isBlank(data)) { return null; }

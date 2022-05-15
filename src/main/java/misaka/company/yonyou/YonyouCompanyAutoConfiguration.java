@@ -1,6 +1,6 @@
 package misaka.company.yonyou;
 
-import artoria.query.QueryUtils;
+import artoria.action.ActionUtils;
 import artoria.util.Assert;
 import misaka.company.CompanyQuery;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ public class YonyouCompanyAutoConfiguration {
         String baseInfoApiCode = properties.getBaseInfoApiCode();
         String searchApiCode = properties.getSearchApiCode();
         Integer timeout = properties.getTimeout();
-        YonyouCompanyQueryHandler queryHandler =
-                new YonyouCompanyQueryHandler(baseInfoApiCode, searchApiCode, timeout);
-        QueryUtils.registerHandler(CompanyQuery.class, "yonyou", queryHandler);
+        YonyouCompanyActionHandler actionHandler =
+                new YonyouCompanyActionHandler(baseInfoApiCode, searchApiCode, timeout);
+        ActionUtils.registerHandler(CompanyQuery.class, "yonyou", actionHandler);
     }
 
 }
