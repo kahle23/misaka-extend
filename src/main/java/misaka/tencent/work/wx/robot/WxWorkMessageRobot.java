@@ -4,13 +4,17 @@ import artoria.bot.MessageBot;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
 import artoria.lang.Dict;
+import artoria.message.sender.AbstractMessageSender;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
 import artoria.util.Assert;
+import artoria.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 import static artoria.common.Constants.UTF_8;
 
@@ -18,7 +22,7 @@ import static artoria.common.Constants.UTF_8;
  * Work WeChat message robot.
  * @author Kahle
  */
-public class WxWorkMessageRobot implements MessageBot {
+public class WxWorkMessageRobot extends AbstractMessageSender implements MessageBot {
     private static Logger log = LoggerFactory.getLogger(WxWorkMessageRobot.class);
     private final String url;
 
@@ -48,6 +52,13 @@ public class WxWorkMessageRobot implements MessageBot {
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
+    }
+
+    @Override
+    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
+        isSupport(new Class[]{ String.class }, clazz);
+        Object send = send(message);
+        return ObjectUtils.cast(send, clazz);
     }
 
 }

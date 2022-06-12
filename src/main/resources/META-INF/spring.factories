@@ -1,6 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 misaka.alibaba.dingtalk.DingTalkAutoConfiguration,\
-misaka.alibaba.cloud.oss.OssAutoConfiguration,\
 misaka.alibaba.cloud.sms.SmsAutoConfiguration,\
 misaka.alibaba.pay.AliPayAutoConfiguration,\
 misaka.tencent.wx.pay.old.WxPayAutoConfiguration,\
