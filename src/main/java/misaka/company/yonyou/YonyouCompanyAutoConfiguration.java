@@ -2,7 +2,6 @@ package misaka.company.yonyou;
 
 import artoria.action.ActionUtils;
 import artoria.util.Assert;
-import misaka.company.CompanyQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class YonyouCompanyAutoConfiguration {
         Integer timeout = properties.getTimeout();
         YonyouCompanyActionHandler actionHandler =
                 new YonyouCompanyActionHandler(baseInfoApiCode, searchApiCode, timeout);
-        ActionUtils.registerHandler(CompanyQuery.class, "yonyou", actionHandler);
+        ActionUtils.registerHandler("yonyou", actionHandler);
     }
 
 }

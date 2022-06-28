@@ -70,8 +70,8 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
 
     protected Company build(Map<String, Object> map) {
         Company result = new Company();
-        result.rawData(map);
-        result.fromMap(map);
+//        result.rawData(map);
+//        result.fromMap(map);
         Object value;
         result.setId((value = map.get("id")) != null ? valueOf(value) : null);
         result.setName((value = map.get("name")) != null ? valueOf(value) : null);
@@ -80,8 +80,8 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
         result.setTelephone((value = map.get("phoneNumber")) != null ? valueOf(value) : null);
         result.setWebsite((value = map.get("websiteList")) != null ? valueOf(value) : null);
         result.setEmail((value = map.get("email")) != null ? valueOf(value) : null);
-        result.put("address", (value = map.get("regLocation")) != null ? valueOf(value) : null);
-        result.put("industry", (value = map.get("industry")) != null ? valueOf(value) : null);
+//        result.put("address", (value = map.get("regLocation")) != null ? valueOf(value) : null);
+//        result.put("industry", (value = map.get("industry")) != null ? valueOf(value) : null);
         return result;
     }
 

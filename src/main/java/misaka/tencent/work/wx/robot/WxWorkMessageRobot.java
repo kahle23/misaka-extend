@@ -4,7 +4,7 @@ import artoria.bot.MessageBot;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
 import artoria.lang.Dict;
-import artoria.message.sender.AbstractMessageSender;
+import artoria.message.handler.AbstractMessageHandler;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
@@ -22,7 +22,7 @@ import static artoria.common.Constants.UTF_8;
  * Work WeChat message robot.
  * @author Kahle
  */
-public class WxWorkMessageRobot extends AbstractMessageSender implements MessageBot {
+public class WxWorkMessageRobot extends AbstractMessageHandler implements MessageBot {
     private static Logger log = LoggerFactory.getLogger(WxWorkMessageRobot.class);
     private final String url;
 
