@@ -97,7 +97,7 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
     }
 
     @Override
-    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> T info(Object input, Class<T> clazz) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/3cd7c462-04d3-4878-b498-0f1e4b3219c5_true.html
         isSupport(new Class[]{ Company.class }, clazz);
         CompanyQuery companyQuery = (CompanyQuery) input;
@@ -136,7 +136,7 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
 
 
     @Override
-    public <T> List<T> search(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> List<T> search(Object input, Class<T> clazz) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/04ef434b-0170-4287-ba45-ec317fac88a3_true.html
         isSupport(new Class[]{ Company.class }, clazz);
         CompanyQuery companyQuery = (CompanyQuery) input;

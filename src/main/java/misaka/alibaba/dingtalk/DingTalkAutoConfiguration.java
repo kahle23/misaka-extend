@@ -1,6 +1,5 @@
 package misaka.alibaba.dingtalk;
 
-import artoria.cache.Cache;
 import artoria.cache.SimpleCache;
 import artoria.lang.ReferenceType;
 import artoria.net.HttpUtils;
@@ -23,7 +22,7 @@ public class DingTalkAutoConfiguration {
     public DingTalkAutoConfiguration(DingTalkProperties dingTalkProperties) {
         String appSecret = dingTalkProperties.getAppSecret();
         String appKey = dingTalkProperties.getAppKey();
-        Cache cache = new SimpleCache("ding-talk-cache", 0, 600000, ReferenceType.SOFT);
+        SimpleCache cache = new SimpleCache("ding-talk-cache", 0, 600000, ReferenceType.SOFT);
         cache.setRecordLog(true);
         dingTalkService = new DingTalkService(HttpUtils.getHttpClient(), cache, appKey, appSecret);
     }

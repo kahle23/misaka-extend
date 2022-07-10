@@ -27,7 +27,7 @@ public class IpApiIpActionHandler extends AbstractActionHandler implements InfoH
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class, IpLocation.class};
 
     @Override
-    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> T info(Object input, Class<T> clazz) {
         isSupport(supportClasses, clazz);
         IpQuery ipQuery = (IpQuery) input;
         String ipAddress = ipQuery.getIpAddress();

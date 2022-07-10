@@ -22,7 +22,7 @@ public class FileBasedDeviceActionHandler extends AbstractActionHandler implemen
     }
 
     @Override
-    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> T info(Object input, Class<T> clazz) {
         isSupport(new Class[]{ Device.class }, clazz);
         DeviceQuery deviceQuery = (DeviceQuery) input;
         String model = deviceQuery.getModel();

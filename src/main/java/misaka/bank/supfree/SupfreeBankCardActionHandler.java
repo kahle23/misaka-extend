@@ -19,8 +19,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 import static artoria.common.Constants.*;
 
 /**
@@ -40,7 +38,7 @@ public class SupfreeBankCardActionHandler extends AbstractActionHandler implemen
     }
 
     @Override
-    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> T info(Object input, Class<T> clazz) {
         String bankCardNumber = null;
         try {
             isSupport(new Class[]{BankCard.class}, clazz);

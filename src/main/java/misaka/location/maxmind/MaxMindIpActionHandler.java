@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.InetAddress;
-import java.util.Map;
 
 /**
  * Network physical address provider by MaxMind GeoIP.
@@ -40,7 +39,7 @@ public class MaxMindIpActionHandler extends AbstractActionHandler implements Inf
     }
 
     @Override
-    public <T> T info(Map<?, ?> properties, Object input, Class<T> clazz) {
+    public <T> T info(Object input, Class<T> clazz) {
         try {
             isSupport(supportClasses, clazz);
             IpQuery ipQuery = (IpQuery) input;
