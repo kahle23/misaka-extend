@@ -65,7 +65,7 @@
         <dependency>
             <groupId>io.github.kahle23</groupId>
             <artifactId>artoria-extend</artifactId>
-            <version>1.0.0.20210919.beta</version>
+            <version>1.0.0.20210920g31.beta</version>
         </dependency>
         <!-- ///// end artoria //// -->
 
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>io.github.kahle23</groupId>
             <artifactId>misaka</artifactId>
-            <version>1.0.0.20210919.beta</version>
+            <version>1.0.0.20210920g31.beta</version>
         </dependency>
         <!-- ///// end misaka //// -->
 

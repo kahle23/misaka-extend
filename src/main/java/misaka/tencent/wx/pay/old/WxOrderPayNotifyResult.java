@@ -1,6 +1,5 @@
 package misaka.tencent.wx.pay.old;
 
-import artoria.data.Mappable;
 import artoria.util.StringUtils;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ import static artoria.common.Constants.THIRTY;
  * @author Kahle
  */
 @Deprecated
-public class WxOrderPayNotifyResult implements Serializable, Mappable {
+public class WxOrderPayNotifyResult implements Serializable {
     public static final String SUCCESS = "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
     public static final String FAIL = "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[FAIL]]></return_msg></xml>";
     /**
@@ -448,7 +447,6 @@ public class WxOrderPayNotifyResult implements Serializable, Mappable {
     private static final String SIGN_TYPE_KEY = "sign_type";
     private static final String SIGN_KEY = "sign";
 
-    @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<String, Object>(THIRTY);
         if (StringUtils.isNotBlank(returnCode)) { result.put(RETURN_CODE_KEY, returnCode); }
@@ -483,7 +481,6 @@ public class WxOrderPayNotifyResult implements Serializable, Mappable {
         return result;
     }
 
-    @Override
     public void fromMap(Map<String, Object> map) {
         String returnCode = (String) map.get(RETURN_CODE_KEY);
         if (StringUtils.isNotBlank(returnCode)) { this.returnCode = returnCode; }

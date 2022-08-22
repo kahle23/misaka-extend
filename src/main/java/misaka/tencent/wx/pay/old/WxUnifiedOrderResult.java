@@ -1,6 +1,5 @@
 package misaka.tencent.wx.pay.old;
 
-import artoria.data.Mappable;
 import artoria.util.StringUtils;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ import static artoria.common.Constants.TWENTY;
  * @author Kahle
  */
 @Deprecated
-public class WxUnifiedOrderResult implements Serializable, Mappable {
+public class WxUnifiedOrderResult implements Serializable {
     /**
      * 返回状态码 (Required:YES).
      * 此字段是通信标识，非交易标识.
@@ -270,7 +269,6 @@ public class WxUnifiedOrderResult implements Serializable, Mappable {
     private static final String CODE_URL_KEY = "code_url";
     private static final String MWEB_URL_KEY = "mweb_url";
 
-    @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result = new HashMap<String, Object>(TWENTY);
         if (StringUtils.isNotBlank(returnCode)) { result.put(RETURN_CODE_KEY, returnCode); }
@@ -291,7 +289,6 @@ public class WxUnifiedOrderResult implements Serializable, Mappable {
         return result;
     }
 
-    @Override
     public void fromMap(Map<String, Object> map) {
         String returnCode = (String) map.get(RETURN_CODE_KEY);
         if (StringUtils.isNotBlank(returnCode)) { this.returnCode = returnCode; }

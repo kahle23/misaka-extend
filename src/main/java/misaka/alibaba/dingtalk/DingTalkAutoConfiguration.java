@@ -23,7 +23,6 @@ public class DingTalkAutoConfiguration {
         String appSecret = dingTalkProperties.getAppSecret();
         String appKey = dingTalkProperties.getAppKey();
         SimpleCache cache = new SimpleCache("ding-talk-cache", 0, 600000, ReferenceType.SOFT);
-        cache.setRecordLog(true);
         dingTalkService = new DingTalkService(HttpUtils.getHttpClient(), cache, appKey, appSecret);
     }
 
