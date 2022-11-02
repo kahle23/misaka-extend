@@ -1,6 +1,6 @@
 package misaka.location.ipapi;
 
-import artoria.action.handler.AbstractActionHandler;
+import artoria.action.AbstractActionHandler;
 import artoria.action.handler.InfoHandler;
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -63,6 +64,12 @@ public class IpApiIpActionHandler extends AbstractActionHandler implements InfoH
             log.info("Parse latitude and longitude to double error", e);
         }
         return BeanUtils.beanToBean(ipApiIpLocation, clazz);
+    }
+
+    @Override
+    public <T> T execute(Object input, Type type) {
+
+        return info(input, (Class<T>) type);
     }
 
 }

@@ -1,6 +1,6 @@
 package misaka.location.maxmind;
 
-import artoria.action.handler.AbstractActionHandler;
+import artoria.action.AbstractActionHandler;
 import artoria.action.handler.InfoHandler;
 import artoria.exception.ExceptionUtils;
 import artoria.util.ObjectUtils;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 
@@ -78,6 +79,12 @@ public class MaxMindIpActionHandler extends AbstractActionHandler implements Inf
         catch (Exception e) {
             throw ExceptionUtils.wrap(e);
         }
+    }
+
+    @Override
+    public <T> T execute(Object input, Type type) {
+
+        return info(input, (Class<T>) type);
     }
 
 }

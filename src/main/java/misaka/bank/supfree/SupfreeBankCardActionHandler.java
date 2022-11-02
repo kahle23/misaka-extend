@@ -1,6 +1,6 @@
 package misaka.bank.supfree;
 
-import artoria.action.handler.AbstractActionHandler;
+import artoria.action.AbstractActionHandler;
 import artoria.action.handler.InfoHandler;
 import artoria.exception.ExceptionUtils;
 import artoria.net.HttpMethod;
@@ -18,6 +18,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Type;
 
 import static artoria.common.Constants.*;
 
@@ -94,6 +96,12 @@ public class SupfreeBankCardActionHandler extends AbstractActionHandler implemen
             );
             return null;
         }
+    }
+
+    @Override
+    public <T> T execute(Object input, Type type) {
+
+        return info(input, (Class<T>) type);
     }
 
 }

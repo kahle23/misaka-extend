@@ -1,6 +1,6 @@
 package misaka.company.yonyou;
 
-import artoria.action.handler.AbstractActionHandler;
+import artoria.action.AbstractActionHandler;
 import artoria.action.handler.InfoHandler;
 import artoria.action.handler.SearchHandler;
 import artoria.beans.BeanUtils;
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static artoria.common.Constants.UTF_8;
+import static artoria.util.ObjectUtils.cast;
 import static java.lang.String.valueOf;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -123,7 +124,7 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
             Map<String, Object> resultMap = parseResult(bodyAsString);
             if (MapUtils.isEmpty(resultMap)) { return logOutput(null); }
             // Handle result.
-            return ObjectUtils.cast(logOutput(build(resultMap)));
+            return cast(logOutput(build(resultMap)));
         }
         catch (Exception e) {
             log.info("Error message: {}", e.getMessage());
@@ -161,9 +162,9 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
             String bodyAsString = httpResponse.getBodyAsString(UTF_8);
             Map<String, Object> resultMap = parseResult(bodyAsString);
             List<Company> resultList = emptyList();
-            if (MapUtils.isEmpty(resultMap)) { return ObjectUtils.cast(logOutput(resultList)); }
+            if (MapUtils.isEmpty(resultMap)) { return cast(logOutput(resultList)); }
             Iterable items = (Iterable) resultMap.get("items");
-            if (items == null) { return ObjectUtils.cast(logOutput(resultList)); }
+            if (items == null) { return cast(logOutput(resultList)); }
             // Handle result.
             resultList = new ArrayList<Company>();
             for (Object item : items) {
@@ -171,7 +172,7 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
                 Map<String, Object> beanMap = BeanUtils.beanToMap(item);
                 resultList.add(build(beanMap));
             }
-            return ObjectUtils.cast(logOutput(resultList));
+            return cast(logOutput(resultList));
         }
         catch (Exception e) {
             log.info("Error message: {}", e.getMessage());
@@ -179,6 +180,16 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
         }
         finally {
             log.info("---- End \"search\" ----");
+        }
+    }
+
+    @Override
+    public <T> T execute(Object input, Type type) {
+        if (List.class.equals(type)) {
+            return cast(search(input, (Class<Object>) type));
+        }
+        else {
+            return info(input, (Class<T>) type);
         }
     }
 
