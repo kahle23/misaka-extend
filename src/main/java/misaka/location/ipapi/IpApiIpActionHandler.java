@@ -1,13 +1,10 @@
 package misaka.location.ipapi;
 
 import artoria.action.AbstractActionHandler;
-import artoria.action.handler.InfoHandler;
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
 import artoria.net.HttpUtils;
-import artoria.util.MapUtils;
-import artoria.util.StringUtils;
-import artoria.util.TypeUtils;
+import artoria.util.*;
 import misaka.location.ip.IpLocation;
 import misaka.location.ip.IpQuery;
 import org.slf4j.Logger;
@@ -23,12 +20,14 @@ import java.util.Map;
  * @see <a href="http://ip-api.com/">IP Geolocation API</a>
  * @author Kahle
  */
-public class IpApiIpActionHandler extends AbstractActionHandler implements InfoHandler {
+public class IpApiIpActionHandler extends AbstractActionHandler {
     private static Logger log = LoggerFactory.getLogger(IpApiIpActionHandler.class);
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class, IpLocation.class};
 
     @Override
-    public <T> T info(Object input, Class<T> clazz) {
+    public <T> T execute(Object input, Type type) {
+        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
+        Class<T> clazz = ObjectUtils.cast(type);
         isSupport(supportClasses, clazz);
         IpQuery ipQuery = (IpQuery) input;
         String ipAddress = ipQuery.getIpAddress();
@@ -36,8 +35,8 @@ public class IpApiIpActionHandler extends AbstractActionHandler implements InfoH
         if (StringUtils.isBlank(language)) { language = "zh-CN"; }
         String jsonString = HttpUtils.get("http://ip-api.com/json/" + ipAddress + "?lang=" + language);
         if (StringUtils.isBlank(jsonString)) { return null; }
-        ParameterizedType type = TypeUtils.parameterizedOf(Map.class, String.class, String.class);
-        Map<String, String> map = JsonUtils.parseObject(jsonString, type);
+        ParameterizedType parameterizedType = TypeUtils.parameterizedOf(Map.class, String.class, String.class);
+        Map<String, String> map = JsonUtils.parseObject(jsonString, parameterizedType);
         if (MapUtils.isEmpty(map)) { return null; }
         IpApiIpLocation ipApiIpLocation = new IpApiIpLocation();
         ipApiIpLocation.setIpAddress(ipAddress);
@@ -64,12 +63,6 @@ public class IpApiIpActionHandler extends AbstractActionHandler implements InfoH
             log.info("Parse latitude and longitude to double error", e);
         }
         return BeanUtils.beanToBean(ipApiIpLocation, clazz);
-    }
-
-    @Override
-    public <T> T execute(Object input, Type type) {
-
-        return info(input, (Class<T>) type);
     }
 
 }

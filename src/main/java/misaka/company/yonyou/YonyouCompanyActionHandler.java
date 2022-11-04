@@ -1,8 +1,6 @@
 package misaka.company.yonyou;
 
 import artoria.action.AbstractActionHandler;
-import artoria.action.handler.InfoHandler;
-import artoria.action.handler.SearchHandler;
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
@@ -33,7 +31,7 @@ import static java.util.Collections.emptyMap;
 /**
  * Yonyou cloud (https://yonyoucloud.com).
  */
-public class YonyouCompanyActionHandler extends AbstractActionHandler implements InfoHandler, SearchHandler {
+public class YonyouCompanyActionHandler extends AbstractActionHandler {
     private static final String BASE_INFO_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/baseinfo/baseinfoV3?name=%s";
     private static final String SEARCH_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/Search/search?word=%s";
     private static final String AUTHORIZATION_HEADER = "authoration";
@@ -97,11 +95,8 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
         return output;
     }
 
-    @Override
-    public <T> T info(Object input, Class<T> clazz) {
+    public Company info(CompanyQuery companyQuery) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/3cd7c462-04d3-4878-b498-0f1e4b3219c5_true.html
-        isSupport(new Class[]{ Company.class }, clazz);
-        CompanyQuery companyQuery = (CompanyQuery) input;
         String name = companyQuery.getName();
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         try {
@@ -135,12 +130,8 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
         }
     }
 
-
-    @Override
-    public <T> List<T> search(Object input, Class<T> clazz) {
+    public List<Company> search(CompanyQuery companyQuery) {
         // https://api.yonyoucloud.com/apilink/tempServicePages/04ef434b-0170-4287-ba45-ec317fac88a3_true.html
-        isSupport(new Class[]{ Company.class }, clazz);
-        CompanyQuery companyQuery = (CompanyQuery) input;
         String name = companyQuery.getName();
         Assert.notBlank(name, "Parameter \"name\" must not blank. ");
         try {
@@ -185,11 +176,16 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler implements
 
     @Override
     public <T> T execute(Object input, Type type) {
-        if (List.class.equals(type)) {
-            return cast(search(input, (Class<Object>) type));
+        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
+        Class<?> clazz = (Class<?>) type;
+        CompanyQuery companyQuery = (CompanyQuery) input;
+        if (List.class.equals(clazz)) {
+            isSupport(new Class[]{ List.class }, clazz);
+            return cast(search(companyQuery));
         }
         else {
-            return info(input, (Class<T>) type);
+            isSupport(new Class[]{ Company.class }, clazz);
+            return cast(info(companyQuery));
         }
     }
 

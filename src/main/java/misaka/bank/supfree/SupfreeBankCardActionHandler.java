@@ -1,12 +1,11 @@
 package misaka.bank.supfree;
 
 import artoria.action.AbstractActionHandler;
-import artoria.action.handler.InfoHandler;
-import artoria.exception.ExceptionUtils;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
+import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
@@ -27,7 +26,7 @@ import static artoria.common.Constants.*;
  * Bank card information provider based on website "bankcard.supfree.net".
  * @author Kahle
  */
-public class SupfreeBankCardActionHandler extends AbstractActionHandler implements InfoHandler {
+public class SupfreeBankCardActionHandler extends AbstractActionHandler {
     private static Logger log = LoggerFactory.getLogger(SupfreeBankCardActionHandler.class);
 
     private String cutoutValue(String data) {
@@ -40,7 +39,9 @@ public class SupfreeBankCardActionHandler extends AbstractActionHandler implemen
     }
 
     @Override
-    public <T> T info(Object input, Class<T> clazz) {
+    public <T> T execute(Object input, Type type) {
+        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
+        Class<?> clazz = (Class<?>) type;
         String bankCardNumber = null;
         try {
             isSupport(new Class[]{BankCard.class}, clazz);
@@ -88,20 +89,9 @@ public class SupfreeBankCardActionHandler extends AbstractActionHandler implemen
             return ObjectUtils.cast(bankCard);
         }
         catch (Exception e) {
-            log.info(
-                    "Failed to find \"{}\" in \"bankcard.supfree.net\". {}{}"
-                    , bankCardNumber
-                    , NEWLINE
-                    , ExceptionUtils.toString(e)
-            );
+            log.info("Failed to find \"{}\" in \"bankcard.supfree.net\". ", bankCardNumber, e);
             return null;
         }
-    }
-
-    @Override
-    public <T> T execute(Object input, Type type) {
-
-        return info(input, (Class<T>) type);
     }
 
 }

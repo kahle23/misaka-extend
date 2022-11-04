@@ -28,14 +28,14 @@ public class YonyouCompanyQueryHandlerTest {
     @Test
     public void testInfo() {
         CompanyQuery query = new CompanyQuery("微软（中国）有限公司上海分公司");
-        Company company = ActionUtils.info(query, Company.class);
+        Company company = ActionUtils.execute(query, Company.class);
         log.info(JSON.toJSONString(company, Boolean.TRUE));
     }
 
     @Test
     public void testSearch() {
         CompanyQuery query = new CompanyQuery("Microsoft");
-        List<Company> companyList = ActionUtils.search(query, Company.class);
+        List<Company> companyList = ActionUtils.execute(query, List.class);
         log.info(JSON.toJSONString(companyList, Boolean.TRUE));
     }
 
