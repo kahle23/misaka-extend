@@ -1,6 +1,6 @@
 package misaka.company.yonyou;
 
-import artoria.action.AbstractActionHandler;
+import artoria.action.handler.AbstractClassicActionHandler;
 import artoria.beans.BeanUtils;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
@@ -31,7 +31,7 @@ import static java.util.Collections.emptyMap;
 /**
  * Yonyou cloud (https://yonyoucloud.com).
  */
-public class YonyouCompanyActionHandler extends AbstractActionHandler {
+public class YonyouCompanyActionHandler extends AbstractClassicActionHandler {
     private static final String BASE_INFO_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/baseinfo/baseinfoV3?name=%s";
     private static final String SEARCH_URL_FORMAT = "https://api.yonyoucloud.com/apis/dst/Search/search?word=%s";
     private static final String AUTHORIZATION_HEADER = "authoration";
@@ -175,9 +175,7 @@ public class YonyouCompanyActionHandler extends AbstractActionHandler {
     }
 
     @Override
-    public <T> T execute(Object input, Type type) {
-        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
-        Class<?> clazz = (Class<?>) type;
+    public <T> T execute(Object input, Class<T> clazz) {
         CompanyQuery companyQuery = (CompanyQuery) input;
         if (List.class.equals(clazz)) {
             isSupport(new Class[]{ List.class }, clazz);

@@ -1,8 +1,7 @@
 package misaka.location.maxmind;
 
-import artoria.action.AbstractActionHandler;
+import artoria.action.handler.AbstractClassicActionHandler;
 import artoria.exception.ExceptionUtils;
-import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
 import com.maxmind.geoip2.DatabaseReader;
@@ -14,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 
@@ -23,7 +21,7 @@ import java.net.InetAddress;
  * @see <a href="https://dev.maxmind.com/geoip/">MaxMind GeoIP</a>
  * @author Kahle
  */
-public class MaxMindIpActionHandler extends AbstractActionHandler {
+public class MaxMindIpActionHandler extends AbstractClassicActionHandler {
     private static Logger log = LoggerFactory.getLogger(MaxMindIpActionHandler.class);
     private final File providerDbPath;
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class };
@@ -40,9 +38,7 @@ public class MaxMindIpActionHandler extends AbstractActionHandler {
     }
 
     @Override
-    public <T> T execute(Object input, Type type) {
-        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
-        Class<?> clazz = (Class<?>) type;
+    public <T> T execute(Object input, Class<T> clazz) {
         try {
             isSupport(supportClasses, clazz);
             IpQuery ipQuery = (IpQuery) input;

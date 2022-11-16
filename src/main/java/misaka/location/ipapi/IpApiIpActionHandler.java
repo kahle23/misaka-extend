@@ -1,17 +1,18 @@
 package misaka.location.ipapi;
 
-import artoria.action.AbstractActionHandler;
+import artoria.action.handler.AbstractClassicActionHandler;
 import artoria.beans.BeanUtils;
 import artoria.exchange.JsonUtils;
 import artoria.net.HttpUtils;
-import artoria.util.*;
+import artoria.util.MapUtils;
+import artoria.util.StringUtils;
+import artoria.util.TypeUtils;
 import misaka.location.ip.IpLocation;
 import misaka.location.ip.IpQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -20,14 +21,12 @@ import java.util.Map;
  * @see <a href="http://ip-api.com/">IP Geolocation API</a>
  * @author Kahle
  */
-public class IpApiIpActionHandler extends AbstractActionHandler {
+public class IpApiIpActionHandler extends AbstractClassicActionHandler {
     private static Logger log = LoggerFactory.getLogger(IpApiIpActionHandler.class);
     private Class<?>[] supportClasses = new Class[] { IpApiIpLocation.class, IpLocation.class};
 
     @Override
-    public <T> T execute(Object input, Type type) {
-        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
-        Class<T> clazz = ObjectUtils.cast(type);
+    public <T> T execute(Object input, Class<T> clazz) {
         isSupport(supportClasses, clazz);
         IpQuery ipQuery = (IpQuery) input;
         String ipAddress = ipQuery.getIpAddress();

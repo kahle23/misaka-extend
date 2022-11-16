@@ -1,11 +1,10 @@
 package misaka.bank.supfree;
 
-import artoria.action.AbstractActionHandler;
+import artoria.action.handler.AbstractClassicActionHandler;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
-import artoria.util.Assert;
 import artoria.util.CollectionUtils;
 import artoria.util.ObjectUtils;
 import artoria.util.StringUtils;
@@ -18,15 +17,13 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Type;
-
 import static artoria.common.Constants.*;
 
 /**
  * Bank card information provider based on website "bankcard.supfree.net".
  * @author Kahle
  */
-public class SupfreeBankCardActionHandler extends AbstractActionHandler {
+public class SupfreeBankCardActionHandler extends AbstractClassicActionHandler {
     private static Logger log = LoggerFactory.getLogger(SupfreeBankCardActionHandler.class);
 
     private String cutoutValue(String data) {
@@ -39,9 +36,7 @@ public class SupfreeBankCardActionHandler extends AbstractActionHandler {
     }
 
     @Override
-    public <T> T execute(Object input, Type type) {
-        Assert.isInstanceOf(Class.class, type, "Parameter \"type\" must instance of class. ");
-        Class<?> clazz = (Class<?>) type;
+    public <T> T execute(Object input, Class<T> clazz) {
         String bankCardNumber = null;
         try {
             isSupport(new Class[]{BankCard.class}, clazz);
