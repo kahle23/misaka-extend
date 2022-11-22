@@ -4,17 +4,14 @@ import artoria.bot.MessageBot;
 import artoria.exception.ExceptionUtils;
 import artoria.exchange.JsonUtils;
 import artoria.lang.Dict;
-import artoria.message.handler.AbstractMessageHandler;
+import artoria.message.handler.AbstractClassicMessageHandler;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;
 import artoria.net.HttpResponse;
 import artoria.net.HttpUtils;
 import artoria.util.Assert;
-import artoria.util.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 import static artoria.common.Constants.UTF_8;
 
@@ -22,7 +19,7 @@ import static artoria.common.Constants.UTF_8;
  * Work WeChat message robot.
  * @author Kahle
  */
-public class WxWorkMessageRobot extends AbstractMessageHandler implements MessageBot {
+public class WxWorkMessageRobot extends AbstractClassicMessageHandler implements MessageBot {
     private static Logger log = LoggerFactory.getLogger(WxWorkMessageRobot.class);
     private final String url;
 
@@ -55,10 +52,18 @@ public class WxWorkMessageRobot extends AbstractMessageHandler implements Messag
     }
 
     @Override
-    public <T> T send(Map<?, ?> properties, Object message, Class<T> clazz) {
-        isSupport(new Class[]{ String.class }, clazz);
-        Object send = send(message);
-        return ObjectUtils.cast(send, clazz);
+    public Object operate(Object input, String name, Class<?> clazz) {
+        Assert.notNull(input, "Parameter \"input\" must not null. ");
+        Assert.notNull(clazz, "Parameter \"clazz\" must not null. ");
+        if ("send".equals(name)) {
+            isSupport(new Class[]{ String.class }, clazz);
+            return send(input);
+        }
+        else {
+            throw new UnsupportedOperationException(
+                    "Unsupported operation name \"" + name + "\"! "
+            );
+        }
     }
 
 }
