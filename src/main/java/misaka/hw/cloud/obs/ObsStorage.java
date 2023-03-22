@@ -6,6 +6,7 @@ import artoria.util.Assert;
 import artoria.util.CloseUtils;
 import artoria.util.ObjectUtils;
 import com.obs.services.ObsClient;
+import com.obs.services.model.DeleteObjectsRequest;
 import com.obs.services.model.ObjectListing;
 import com.obs.services.model.ObsObject;
 
@@ -17,6 +18,7 @@ import static artoria.util.ObjectUtils.cast;
 /**
  * https://support.huaweicloud.com/productdesc-obs/obs_03_0370.html
  */
+@Deprecated // TODO: 2023/3/23 Deletable
 public class ObsStorage extends AbstractStreamStorage {
     private final ObsClient obsClient;
     private final String bucketName;

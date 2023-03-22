@@ -7,6 +7,7 @@ import artoria.util.CloseUtils;
 import io.minio.*;
 import io.minio.errors.ErrorResponseException;
 import io.minio.messages.ErrorResponse;
+import io.minio.messages.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ import java.util.Collection;
 
 import static artoria.util.ObjectUtils.cast;
 
+@Deprecated // TODO: 2023/3/23 Deletable
 public class MinioStorage extends AbstractStreamStorage {
     private static Logger log = LoggerFactory.getLogger(MinioStorage.class);
     private final MinioClient minioClient;
@@ -134,6 +136,8 @@ public class MinioStorage extends AbstractStreamStorage {
     @Override
     public <T> Collection<T> keys(Object pattern, Class<T> type) {
         // todo minioClient keys
+        ListObjectsArgs args = null;
+        Iterable<Result<Item>> results = minioClient.listObjects(args);
         return super.keys(pattern, type);
     }
 
