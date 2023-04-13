@@ -1,9 +1,9 @@
 package misaka.alibaba.pay;
 
 import artoria.data.AppType;
-import artoria.exchange.FastJsonProvider;
-import artoria.exchange.JsonUtils;
-import artoria.identifier.IdentifierUtils;
+import artoria.data.json.JsonUtils;
+import artoria.data.json.support.FastJsonProvider;
+import artoria.generator.id.IdUtils;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
 import misaka.pay.*;
@@ -51,7 +51,7 @@ public class AliPayProviderTest {
 
     @Test
     public void test1() {
-        String outTradeId = IdentifierUtils.nextStringIdentifier();
+        String outTradeId = IdUtils.nextString("uuid");
         log.info("outTradeId: {}", outTradeId);
         OrderPayModel orderPayModel = new OrderPayModel();
         orderPayModel.setAppId(CUSTOM_APP_ID);

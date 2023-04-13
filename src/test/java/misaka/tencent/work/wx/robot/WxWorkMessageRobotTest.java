@@ -1,7 +1,7 @@
 package misaka.tencent.work.wx.robot;
 
 import artoria.bot.MessageBot;
-import artoria.exchange.FastJsonProvider;
+import artoria.data.json.support.FastJsonProvider;
 import artoria.exchange.JsonUtils;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package misaka.alibaba.dingtalk;
 
-import artoria.exchange.FastJsonProvider;
-import artoria.exchange.JsonUtils;
+import artoria.data.json.JsonUtils;
+import artoria.data.json.support.FastJsonProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 

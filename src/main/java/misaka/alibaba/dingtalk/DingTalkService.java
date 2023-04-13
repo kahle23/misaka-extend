@@ -1,11 +1,11 @@
 package misaka.alibaba.dingtalk;
 
-import artoria.beans.BeanUtils;
 import artoria.cache.Cache;
 import artoria.codec.Base64Utils;
+import artoria.data.Dict;
+import artoria.data.bean.BeanUtils;
+import artoria.data.json.JsonUtils;
 import artoria.exception.ExceptionUtils;
-import artoria.exchange.JsonUtils;
-import artoria.lang.Dict;
 import artoria.net.HttpClient;
 import artoria.net.HttpMethod;
 import artoria.net.HttpRequest;

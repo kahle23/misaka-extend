@@ -1,6 +1,6 @@
 package misaka.tencent.wx.miniapp;
 
-import artoria.exchange.FastJsonProvider;
+import artoria.data.json.support.FastJsonProvider;
 import artoria.exchange.JsonUtils;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;

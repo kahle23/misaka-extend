@@ -1,9 +1,9 @@
 package misaka.tencent.wx.pay;
 
 import artoria.data.AppType;
-import artoria.exchange.FastJsonProvider;
-import artoria.exchange.JsonUtils;
-import artoria.identifier.IdentifierUtils;
+import artoria.data.json.JsonUtils;
+import artoria.data.json.support.FastJsonProvider;
+import artoria.generator.id.IdUtils;
 import com.alibaba.fastjson.JSON;
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;
@@ -37,7 +37,7 @@ public class WxPayProviderTest {
 
     @Test
     public void test1() {
-        String outTradeId = IdentifierUtils.nextStringIdentifier();
+        String outTradeId = IdUtils.nextString("uuid");
         log.info("outTradeId: {}", outTradeId);
         OrderPayModel orderPayModel = new OrderPayModel();
         orderPayModel.setAppType(AppType.APP_ANDROID.name());
