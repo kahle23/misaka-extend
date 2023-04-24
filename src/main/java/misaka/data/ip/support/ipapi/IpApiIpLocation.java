@@ -1,7 +1,7 @@
 package misaka.data.ip.support.ipapi;
 
 import artoria.util.StringUtils;
-import misaka.location.ip.IpLocation;
+import misaka.data.ip.IpLocation;
 
 import static artoria.common.Constants.BLANK_SPACE;
 import static artoria.common.Constants.EMPTY_STRING;

@@ -1,4 +1,4 @@
-package misaka.jackyun;
+package misaka.extension.jackyun;
 
 import artoria.action.handler.AbstractAutoOperateActionHandler;
 import artoria.data.Dict;
@@ -19,6 +19,10 @@ import java.util.SortedMap;
 
 import static artoria.common.Constants.UTF_8;
 
+/**
+ * 抽象的吉客云相关处理器.
+ * @author Kahle
+ */
 public abstract class AbstractJackYunHandler extends AbstractAutoOperateActionHandler {
     private static Logger log = LoggerFactory.getLogger(AbstractJackYunOpenApiHandler.class);
 

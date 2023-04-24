@@ -1,5 +1,9 @@
-package misaka.jackyun.polyapi;
+package misaka.extension.jackyun.polyapi;
 
+/**
+ * 菠萝派平台的参数请求对象.
+ * @author Kahle
+ */
 public class PolyApiReq {
     /**
      * 方法名称.

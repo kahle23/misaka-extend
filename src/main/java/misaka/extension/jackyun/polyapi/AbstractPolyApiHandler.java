@@ -1,4 +1,4 @@
-package misaka.jackyun.polyapi;
+package misaka.extension.jackyun.polyapi;
 
 import artoria.data.Dict;
 import artoria.data.json.JsonUtils;
@@ -6,7 +6,7 @@ import artoria.net.http.HttpMethod;
 import artoria.time.DateUtils;
 import artoria.util.Assert;
 import artoria.util.StringUtils;
-import misaka.jackyun.AbstractJackYunHandler;
+import misaka.extension.jackyun.AbstractJackYunHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,16 +56,16 @@ public abstract class AbstractPolyApiHandler extends AbstractJackYunHandler {
         PolyApiConfig config = getInvokeConfig(polyApiReq, "validateSign", Boolean.class);
         // 校验并处理配置
         handleConfig(config);
-        //签名参数
+        // 签名参数
         SortedMap<String, String> sortedMap = new TreeMap<String, String>();
         sortedMap.put("method", polyApiReq.getMethod());
         sortedMap.put("appkey", config.getAppKey());
         sortedMap.put("token",  token);
         sortedMap.put("bizcontent", polyApiReq.getBizContent());
-        //
+        // 生成签名
         String calcSign = createSign(config.getAppSecret(), sortedMap);
         polyApiReq.setCalcSign(calcSign);
-        //
+        // 判断签名是否相等
         return StringUtils.equals(sign, calcSign);
     }
 
@@ -96,7 +96,7 @@ public abstract class AbstractPolyApiHandler extends AbstractJackYunHandler {
         handleConfig(config);
         // 从入参中转换出 业务数据（返回的 bizData 大概率都是 String）
         Object bizData = convertInput(input, method, clazz);
-        //
+        // 构造数据对象
         Dict dataDict = Dict.of("uerName", config.getUsername())
                 .set("messageType", method)
                 .set("targetType", config.getTargetType())

@@ -1,4 +1,4 @@
-package misaka.jackyun;
+package misaka.extension.jackyun;
 
 import artoria.net.http.HttpMethod;
 import artoria.time.DateUtils;

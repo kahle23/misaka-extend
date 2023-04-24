@@ -1,5 +1,9 @@
-package misaka.jackyun.polyapi;
+package misaka.extension.jackyun.polyapi;
 
+/**
+ * 菠萝派平台的配置类.
+ * @author Kahle
+ */
 public class PolyApiConfig {
     /**
      * 菠萝派平台的推送接口地址.

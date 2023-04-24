@@ -1,5 +1,9 @@
-package misaka.jackyun;
+package misaka.extension.jackyun;
 
+/**
+ * 吉客云开放平台的配置类.
+ * @author Kahle
+ */
 public class JackYunConfig {
     /**
      * 吉客云开放平台调用地址.
