@@ -32,11 +32,23 @@ public abstract class AbstractPolyApiHandler extends AbstractJackYunHandler {
         super(actionName);
     }
 
+    /**
+     * 获取要调用的 URL 地址.
+     *
+     * 管家推送接口地址（需要进行拼接）
+     * 拼接逻辑：http://api.polyapi.com/OrderNotify/Notify/Business_GetNotifyOrder_PolyMall + _ + username
+     *
+     * 吉客云推送接口地址
+     * 地址信息：https://polyapi.jackyun.com/openapi/do/notify/STANDARD/32/198
+     *
+     * @param config 菠萝派的配置信息
+     * @return 要调用的 URL 地址
+     */
     protected String getApiAddress(PolyApiConfig config) {
         // 为什么不要求使用者直接把拼接好的 URL 写在配置文件中呢？
         // 地址应该不会改，但其他参数都可能会改，拼接好得话就得多修改了一个字段了。
-        // 具体拼接效果为：http://api.polyapi.com/OrderNotify/Notify/Business_GetNotifyOrder_PolyMall + _ + username
-        return String.format("%s_%s", config.getAddress(), config.getUsername());
+        //return String.format("%s_%s", config.getAddress(), config.getUsername());
+        return config.getAddress();
     }
 
     protected void handleConfig(PolyApiConfig config) {
@@ -73,7 +85,7 @@ public abstract class AbstractPolyApiHandler extends AbstractJackYunHandler {
      * 正常情况下，此方法的 input、operation 和 clazz 应该都是用不到的。
      * 一般都是直接从请求的上下文中获取具体的标识，然后从数据库查询对应的配置信息。
      *
-     * 不过菠萝派自建商品的大部分接口都是它来调用我方接口，它可不会把某种我方标识放在请求头，
+     * 不过菠萝派自建商城的大部分接口都是它来调用我方接口，它可不会把某种我方标识放在请求头，
      * 因此在比如验签时，则是根据参数中的标识，比如“token”去数据库查询对应的配置对象。
      *
      * @param input 调用 action 方法时的入参对象

@@ -28,6 +28,11 @@ public class PolyApiConfig {
     private String username;
     /**
      * 推送方枚举.
+     *
+     * 推送地址枚举说明：
+     * Poly_JACKYUNOPEN：吉客云开放平台
+     * WDGJ_MESSAGE：管家消息系统（目前推送管家选择这个）
+     * Poly_API：新API
      */
     private String targetType;
 
