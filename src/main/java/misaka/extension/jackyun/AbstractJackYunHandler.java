@@ -24,7 +24,7 @@ import static artoria.common.Constants.UTF_8;
  * @author Kahle
  */
 public abstract class AbstractJackYunHandler extends AbstractAutoOperateActionHandler {
-    private static Logger log = LoggerFactory.getLogger(AbstractJackYunOpenApiHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractJackYunOpenApiHandler.class);
 
     public AbstractJackYunHandler(String actionName, Class<?> registeredClass) {
 

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 @Ignore
 public class SupfreeBankCardQueryHandlerTest {
-    private static Logger log = LoggerFactory.getLogger(SupfreeBankCardQueryHandlerTest.class);
+    private static final Logger log = LoggerFactory.getLogger(SupfreeBankCardQueryHandlerTest.class);
 
     @Test
     public void test1() {

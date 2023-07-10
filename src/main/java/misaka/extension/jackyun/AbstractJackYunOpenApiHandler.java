@@ -17,7 +17,7 @@ import java.util.TreeMap;
  * @author Kahle
  */
 public abstract class AbstractJackYunOpenApiHandler extends AbstractJackYunHandler {
-    private static Logger log = LoggerFactory.getLogger(AbstractJackYunOpenApiHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractJackYunOpenApiHandler.class);
 
     public AbstractJackYunOpenApiHandler(String actionName, Class<?> registeredClass) {
 
