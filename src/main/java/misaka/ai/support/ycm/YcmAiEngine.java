@@ -1,4 +1,4 @@
-package misaka.ai.support.yucongming;
+package misaka.ai.support.ycm;
 
 import artoria.ai.support.AbstractClassicAiEngine;
 import artoria.ai.support.SimpleAiMessage;
@@ -27,8 +27,8 @@ import static artoria.common.constant.Numbers.ZERO;
  * @see <a href="https://github.com/liyupi/yucongming-java-sdk">鱼聪明 Java SDK</>
  * @author Kahle
  */
-public class YuCongMingAiEngine extends AbstractClassicAiEngine {
-    private static final Logger log = LoggerFactory.getLogger(YuCongMingAiEngine.class);
+public class YcmAiEngine extends AbstractClassicAiEngine {
+    private static final Logger log = LoggerFactory.getLogger(YcmAiEngine.class);
     private static final String API_URI = "https://www.yucongming.com/api/dev";
     private static final String MODEL_ID_KEY = "modelId";
     private static final String MESSAGE_KEY = "message";
@@ -37,7 +37,7 @@ public class YuCongMingAiEngine extends AbstractClassicAiEngine {
     private final Long defModelId;
     private Proxy proxy;
 
-    public YuCongMingAiEngine(Long defModelId, String accessKey, String secretKey) {
+    public YcmAiEngine(Long defModelId, String accessKey, String secretKey) {
         Assert.notBlank(accessKey, "Parameter \"accessKey\" must not blank. ");
         Assert.notBlank(secretKey, "Parameter \"secretKey\" must not blank. ");
         Assert.notNull(defModelId, "Parameter \"defModelId\" must not null. ");
@@ -46,7 +46,7 @@ public class YuCongMingAiEngine extends AbstractClassicAiEngine {
         this.secretKey = secretKey;
     }
 
-    public YuCongMingAiEngine(String accessKey, String secretKey) {
+    public YcmAiEngine(String accessKey, String secretKey) {
 
         this(1651468516836098050L, accessKey, secretKey);
     }
