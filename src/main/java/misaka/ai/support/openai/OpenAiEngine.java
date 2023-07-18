@@ -5,6 +5,7 @@ import artoria.data.Dict;
 import artoria.data.bean.BeanUtils;
 import artoria.data.json.JsonUtils;
 import artoria.util.Assert;
+import artoria.util.CollectionUtils;
 import artoria.util.StringUtils;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
@@ -18,7 +19,7 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.Map;
 
-import static artoria.common.constant.Numbers.ZERO;
+import static java.util.Collections.singletonList;
 
 /**
  * The ai engine based on the openai api.
@@ -66,6 +67,18 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         }
     }
 
+    protected String get(String url, String body) {
+        HttpRequest request = HttpRequest.get(url)
+                .header("Authorization", "Bearer " + getApiKey());
+        if (StrUtil.isNotBlank(body)) {
+            request.body(body);
+        }
+        if (getProxy() != null) {
+            request.setProxy(getProxy());
+        }
+        return request.execute().body();
+    }
+
     protected Object post(String url, String body, Boolean stream) {
         if (stream == null) { stream = false; }
         HttpRequest request = HttpRequest.post(url)
@@ -92,20 +105,82 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         if (MapUtil.isEmpty(error)) { return; }
         String message = error.getString("message");
         String code = error.getString("code");
-        Assert.state(StrUtil.isBlank(code), message);
+        Assert.state(StrUtil.isBlank(code)&&StrUtil.isBlank(message), message);
     }
 
     @Override
     public Object execute(Object input, String strategy, Class<?> clazz) {
-        if ("chat".equals(strategy)) {
+        if ("models".equals(strategy)) {
+            return models(input, strategy, clazz);
+        }
+        else if ("chat".equals(strategy)) {
             return chat(input, strategy, clazz);
         }
-        if ("embedding".equals(strategy)) {
-            return embedding(input, strategy, clazz);
-        }
-        else {
+        else if ("completion".equals(strategy)) {
             return completion(input, strategy, clazz);
         }
+        else if ("embedding".equals(strategy)) {
+            return embedding(input, strategy, clazz);
+        }
+        else { return chat(input, strategy, clazz); }
+    }
+
+    protected Object models(Object input, String strategy, Class<?> clazz) {
+        // Parameter clazz validation
+        isSupport(new Class[]{ Dict.class }, clazz);
+        // open ai api invoke.
+        log.debug("The openai list models api request \"\". ");
+        String response = get("https://api.openai.com/v1/models", null);
+        log.debug("The openai list models api response \"{}\". ", response);
+        // response parse
+        Dict result = JsonUtils.parseObject(response, Dict.class);
+        // result check
+        checkResult(result);
+        // convert result
+        return result;
+    }
+
+    protected Object chat(Object input, String strategy, Class<?> clazz) {
+        Assert.notNull(input, "Parameter \"input\" must not null. ");
+        // data conversion.
+        Dict data;
+        if (input instanceof String) {
+            data = Dict.of("messages", singletonList(Dict.of("role", "user").set("content", input)));
+        }
+        else { data = convertToDict(input); }
+        // parameters validation and default value handle.
+        boolean stream = data.getBoolean(STREAM_KEY, Boolean.FALSE);
+//        String prompt = data.getString(PROMPT_KEY);
+        String model = data.getString(MODEL_KEY);
+//        Assert.notBlank(prompt, "Parameter \"prompt\" must not blank. ");
+        if (StringUtils.isBlank(model)) { data.set(MODEL_KEY, "gpt-3.5-turbo-0613"); }
+        // open ai api invoke.
+        data.set("temperature", 1.9);
+        String json = JsonUtils.toJsonString(data);
+        log.info("The openai chat api request \"{}\". ", json);
+        Object response = post("https://api.openai.com/v1/chat/completions", json, stream);
+        // response is InputStream.
+        if (stream) { return response; }
+        // response is string
+        String body = String.valueOf(response);
+        log.info("The openai chat api response \"{}\". ", body);
+        // response parse
+        Dict result = JsonUtils.parseObject(body, Dict.class);
+        // result check
+        checkResult(result);
+        // convert result
+        if (CharSequence.class.isAssignableFrom(clazz)) {
+            @SuppressWarnings("rawtypes")
+            List choices = (List) result.get("choices");
+            @SuppressWarnings("rawtypes")
+            Map first = (Map) CollectionUtils.getFirst(choices);
+            @SuppressWarnings("rawtypes")
+            Map message = first != null ? (Map) first.get("message") : null;
+            String text = message != null ? (String) message.get("content") : null;
+            Assert.notBlank(text, "The openai chat api first choice message content is blank. ");
+            return text;
+        }
+        else { return result; }
     }
 
     protected Object completion(Object input, String strategy, Class<?> clazz) {
@@ -124,7 +199,7 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         if (StringUtils.isBlank(model)) { data.set(MODEL_KEY, "text-davinci-003"); }
         // Parameter clazz validation
         if (stream) { isSupport(new Class[]{ InputStream.class }, clazz); }
-        else { isSupport(new Class[]{ CharSequence.class, Map.class }, clazz); }
+        else { isSupport(new Class[]{ String.class, Dict.class }, clazz); }
         // open ai api invoke.
         String json = JsonUtils.toJsonString(data);
         log.debug("The openai completions api request \"{}\". ", json);
@@ -143,17 +218,12 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
             @SuppressWarnings("rawtypes")
             List choices = (List) result.get("choices");
             @SuppressWarnings("rawtypes")
-            Map first = choices != null && !choices.isEmpty() ? (Map) choices.get(ZERO) : null;
+            Map first = (Map) CollectionUtils.getFirst(choices);
             String text = first != null ? (String) first.get("text") : null;
             Assert.notBlank(text, "The openai completions api first choice text is blank. ");
             return text;
         }
-        else { return Dict.of(result); }
-    }
-
-    protected Object chat(Object input, String strategy, Class<?> clazz) {
-
-        throw new UnsupportedOperationException();
+        else { return result; }
     }
 
     protected Object embedding(Object input, String strategy, Class<?> clazz) {
