@@ -1,6 +1,7 @@
 package misaka.ai.support.openai;
 
 import artoria.ai.support.AbstractClassicAiEngine;
+import artoria.ai.support.AiMessage;
 import artoria.data.Dict;
 import artoria.data.bean.BeanUtils;
 import artoria.data.json.JsonUtils;
@@ -14,11 +15,14 @@ import cn.hutool.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.Proxy;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Boolean.FALSE;
 import static java.util.Collections.singletonList;
 
 /**
@@ -32,12 +36,16 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
     protected static final String PROMPT_KEY = "prompt";
     protected static final String ERROR_KEY  = "error";
     protected static final String MODEL_KEY  = "model";
-    private final String apiKey;
+    private String apiKey;
     private Proxy proxy;
 
     public OpenAiEngine(String apiKey) {
         Assert.notBlank(apiKey, "Parameter \"apiKey\" must not blank. ");
         this.apiKey = apiKey;
+    }
+
+    protected OpenAiEngine() {
+
     }
 
     public Proxy getProxy() {
@@ -51,7 +59,7 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
     }
 
     protected String getApiKey() {
-
+        Assert.notBlank(apiKey, "Parameter \"apiKey\" must not blank. ");
         return apiKey;
     }
 
@@ -89,7 +97,17 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         }
         if (stream) {
             HttpResponse response = request.executeAsync();
-            return response.bodyStream();
+            if (!response.header("Content-Type").contains("event-stream")) {
+                String body1 = response.body();
+                // response parse
+                Dict result = JsonUtils.parseObject(body1, Dict.class);
+                // result check
+                checkResult(result);
+                return new ByteArrayInputStream(body1.getBytes(Charset.forName(response.charset())));
+            }
+            else {
+                return response.bodyStream();
+            }
         }
         else {
             return request.execute().body();
@@ -127,7 +145,7 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
 
     protected Object models(Object input, String strategy, Class<?> clazz) {
         // Parameter clazz validation
-        isSupport(new Class[]{ Dict.class }, clazz);
+        Assert.isSupport(clazz, FALSE, Dict.class);
         // open ai api invoke.
         log.debug("The openai list models api request \"\". ");
         String response = get("https://api.openai.com/v1/models", null);
@@ -147,15 +165,20 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         if (input instanceof String) {
             data = Dict.of("messages", singletonList(Dict.of("role", "user").set("content", input)));
         }
+        else if (input instanceof AiMessage) {
+            data = Dict.of("messages", singletonList(input));
+        }
         else { data = convertToDict(input); }
         // parameters validation and default value handle.
-        boolean stream = data.getBoolean(STREAM_KEY, Boolean.FALSE);
-//        String prompt = data.getString(PROMPT_KEY);
+        boolean stream = data.getBoolean(STREAM_KEY, FALSE);
         String model = data.getString(MODEL_KEY);
 //        Assert.notBlank(prompt, "Parameter \"prompt\" must not blank. ");
         if (StringUtils.isBlank(model)) { data.set(MODEL_KEY, "gpt-3.5-turbo-0613"); }
+        // Parameter clazz validation
+        if (stream) { Assert.isSupport(clazz, FALSE, InputStream.class); }
+        else { Assert.isSupport(clazz, FALSE, String.class, Dict.class); }
         // open ai api invoke.
-        data.set("temperature", 1.9);
+//        data.set("temperature", 1.9);
         String json = JsonUtils.toJsonString(data);
         log.info("The openai chat api request \"{}\". ", json);
         Object response = post("https://api.openai.com/v1/chat/completions", json, stream);
@@ -192,14 +215,14 @@ public class OpenAiEngine extends AbstractClassicAiEngine {
         }
         else { data = convertToDict(input); }
         // parameters validation and default value handle.
-        boolean stream = data.getBoolean(STREAM_KEY, Boolean.FALSE);
+        boolean stream = data.getBoolean(STREAM_KEY, FALSE);
         String prompt = data.getString(PROMPT_KEY);
         String model = data.getString(MODEL_KEY);
         Assert.notBlank(prompt, "Parameter \"prompt\" must not blank. ");
         if (StringUtils.isBlank(model)) { data.set(MODEL_KEY, "text-davinci-003"); }
         // Parameter clazz validation
-        if (stream) { isSupport(new Class[]{ InputStream.class }, clazz); }
-        else { isSupport(new Class[]{ String.class, Dict.class }, clazz); }
+        if (stream) { Assert.isSupport(clazz, FALSE, InputStream.class); }
+        else { Assert.isSupport(clazz, FALSE, String.class, Dict.class); }
         // open ai api invoke.
         String json = JsonUtils.toJsonString(data);
         log.debug("The openai completions api request \"{}\". ", json);

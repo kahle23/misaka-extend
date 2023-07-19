@@ -1,13 +1,12 @@
 package misaka.ai.support.ycm;
 
 import artoria.ai.support.AbstractClassicAiEngine;
-import artoria.ai.support.SimpleAiMessage;
+import artoria.ai.support.AiMessage;
 import artoria.common.constant.Symbols;
 import artoria.data.Dict;
 import artoria.util.Assert;
 import artoria.util.ObjectUtils;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
@@ -21,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static artoria.common.constant.Numbers.ZERO;
+import static java.lang.Boolean.FALSE;
 
 /**
  * 基于鱼聪明AI接口封装的AI引擎.
@@ -95,14 +95,14 @@ public class YcmAiEngine extends AbstractClassicAiEngine {
         else if (input instanceof Map) {
             dict = Dict.of((Map<?, ?>) input);
         }
-        else if (input instanceof SimpleAiMessage) {
-            SimpleAiMessage msg = (SimpleAiMessage) input;
-            String prompt = msg.getPrompt();
-            String model = msg.getModel();
-            dict = Dict.of(MESSAGE_KEY, prompt);
-            if (StrUtil.isNotBlank(model)) {
-                dict.set(MODEL_ID_KEY, model);
-            }
+        else if (input instanceof AiMessage) {
+            AiMessage msg = (AiMessage) input;
+            String content = msg.getContent();
+//            String model = msg.getModel();
+            dict = Dict.of(MESSAGE_KEY, content);
+//            if (StrUtil.isNotBlank(model)) {
+//                dict.set(MODEL_ID_KEY, model);
+//            }
         }
         else {
             throw new UnsupportedOperationException("Parameter \"input\" is unsupported! ");
@@ -122,7 +122,7 @@ public class YcmAiEngine extends AbstractClassicAiEngine {
 
     @Override
     public Object execute(Object input, String strategy, Class<?> clazz) {
-        isSupport(new Class[]{ String.class, CharSequence.class }, clazz);
+        Assert.isSupport(clazz, FALSE, String.class, CharSequence.class);
         String json = JSONUtil.toJsonStr(convertInput(input, strategy));
         Map<String, String> headers = getHeaders(json);
         log.debug("The yucongming api request \"{}\". \n(Headers: \"{}\")", json, headers);
