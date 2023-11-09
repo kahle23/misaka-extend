@@ -1,7 +1,8 @@
-package misaka.ai.support.ycm;
+package misaka.ai.llm.support.ycm;
 
-import artoria.ai.support.AbstractClassicAiEngine;
-import artoria.ai.support.AiMessage;
+import artoria.ai.AbstractClassicAiEngine;
+import artoria.ai.llm.LLM;
+import artoria.ai.llm.support.AiMessage;
 import artoria.common.constant.Symbols;
 import artoria.data.Dict;
 import artoria.util.Assert;
@@ -27,7 +28,7 @@ import static java.lang.Boolean.FALSE;
  * @see <a href="https://github.com/liyupi/yucongming-java-sdk">鱼聪明 Java SDK</>
  * @author Kahle
  */
-public class YcmAiEngine extends AbstractClassicAiEngine {
+public class YcmAiEngine extends AbstractClassicAiEngine implements LLM {
     private static final Logger log = LoggerFactory.getLogger(YcmAiEngine.class);
     private static final String API_URI = "https://www.yucongming.com/api/dev";
     private static final String MODEL_ID_KEY = "modelId";

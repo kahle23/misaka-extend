@@ -1,7 +1,8 @@
-package misaka.ai.support.openai;
+package misaka.ai.llm.support.openai;
 
-import artoria.ai.support.AbstractClassicAiEngine;
-import artoria.ai.support.AiMessage;
+import artoria.ai.AbstractClassicAiEngine;
+import artoria.ai.llm.LLM;
+import artoria.ai.llm.support.AiMessage;
 import artoria.data.Dict;
 import artoria.data.bean.BeanUtils;
 import artoria.data.json.JsonUtils;
@@ -30,7 +31,7 @@ import static java.util.Collections.singletonList;
  * @see <a href="https://platform.openai.com/docs/api-reference">API REFERENCE</>
  * @author Kahle
  */
-public class OpenAiEngine extends AbstractClassicAiEngine {
+public class OpenAiEngine extends AbstractClassicAiEngine implements LLM {
     private static final Logger log = LoggerFactory.getLogger(OpenAiEngine.class);
     protected static final String STREAM_KEY = "stream";
     protected static final String PROMPT_KEY = "prompt";

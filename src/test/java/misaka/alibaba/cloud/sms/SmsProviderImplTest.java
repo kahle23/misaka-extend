@@ -1,7 +1,7 @@
 package misaka.alibaba.cloud.sms;
 
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
 import misaka.sms.SmsProvider;
@@ -24,7 +24,7 @@ public class SmsProviderImplTest {
 
     @Test
     public void findSelectiveTest() {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         SmsQuery smsQuery = new SmsQuery();
         smsQuery.setPhoneNumber("13688886666");
         smsQuery.setSendTime(DateUtils.create().addDay(-4).getDate());

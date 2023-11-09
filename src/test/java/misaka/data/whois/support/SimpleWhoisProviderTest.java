@@ -1,7 +1,7 @@
 package misaka.data.whois.support;
 
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import com.alibaba.fastjson.JSON;
 import misaka.data.whois.WhoisObject;
 import misaka.data.whois.WhoisProvider;
@@ -19,7 +19,7 @@ public class SimpleWhoisProviderTest {
 
     @Test
     public void test1() {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         WhoisObject whoisObject = whoisProvider.findByDomainName("aaaa.com");
         log.info("{}", JSON.toJSONString(whoisObject, TRUE));
         log.info("{}", whoisObject.rawData());

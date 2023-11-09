@@ -1,7 +1,7 @@
 package misaka.tencent.wx.miniapp;
 
-import artoria.data.json.support.FastJsonProvider;
-import artoria.exchange.JsonUtils;
+import artoria.data.json.JsonUtils;
+import artoria.data.json.support.FastJsonHandler;
 import com.alibaba.fastjson.JSON;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class WxMiniAppServiceTest {
     private static WxMiniAppService wxMiniAppService = new WxMiniAppServiceImpl(appId, appSecret);
 
     static {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         Provider provider = null;
         try {
             provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();

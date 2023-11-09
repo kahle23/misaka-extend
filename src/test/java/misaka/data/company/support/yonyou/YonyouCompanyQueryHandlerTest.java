@@ -2,7 +2,7 @@ package misaka.data.company.support.yonyou;
 
 import artoria.action.ActionUtils;
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.JacksonProvider;
+import artoria.data.json.support.JacksonHandler;
 import artoria.logging.Logger;
 import artoria.logging.LoggerFactory;
 import com.alibaba.fastjson.JSON;
@@ -23,7 +23,8 @@ public class YonyouCompanyQueryHandlerTest {
         Integer timeout = 3000;
         ActionUtils.registerHandler(CompanyQuery.class,
                 new YonyouCompanyActionHandler(baseInfoApiCode, searchApiCode, timeout));
-        JsonUtils.setJsonProvider(new JacksonProvider());
+        JsonUtils.registerHandler("jackson", new JacksonHandler());
+        JsonUtils.setDefaultHandlerName("jackson");
     }
 
     @Test

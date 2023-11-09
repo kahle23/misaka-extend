@@ -1,7 +1,7 @@
 package misaka.alibaba.dingtalk;
 
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ public class DingTalkRobotTest {
 
     @Test
     public void test1() {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         String webHook = "https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxx";
         String secret = "xxxxxxxx";
         DingTalkRobot dingTalkRobot = new DingTalkRobot(webHook, secret);

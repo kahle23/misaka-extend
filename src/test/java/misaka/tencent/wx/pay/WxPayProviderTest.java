@@ -2,7 +2,7 @@ package misaka.tencent.wx.pay;
 
 import artoria.data.AppType;
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import artoria.generator.id.IdUtils;
 import com.alibaba.fastjson.JSON;
 import com.github.binarywang.wxpay.config.WxPayConfig;
@@ -32,7 +32,7 @@ public class WxPayProviderTest {
         WxPayService wxPayService = new WxPayServiceImpl();
         wxPayService.setConfig(wxPayConfig);
         wxPayProvider = new WxPayProvider(wxPayService);
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
     }
 
     @Test

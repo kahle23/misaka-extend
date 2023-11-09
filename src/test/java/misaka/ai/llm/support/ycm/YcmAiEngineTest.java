@@ -1,7 +1,7 @@
-package misaka.ai.support.ycm;
+package misaka.ai.llm.support.ycm;
 
 import artoria.ai.AiUtils;
-import artoria.ai.support.SimpleAiMessage;
+import artoria.data.Dict;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -14,21 +14,20 @@ public class YcmAiEngineTest {
 
     static {
         YcmAiEngine aiEngine = new YcmAiEngine(
-                "accessKey", "secretKey");
-        AiUtils.registerHandler(engineName, aiEngine);
+                "rlh8p35t87vqyw95sl4wnew3trh8ay92", "0zkx8r0dcgivf7tdwfv2tmm46b353zop");
+        AiUtils.registerEngine(engineName, aiEngine);
     }
 
     @Test
     public void test1() {
-        String execute = AiUtils.execute("what is AI?", engineName, String.class);
+        String execute = AiUtils.execute(engineName, "what is AI?", String.class);
         log.info(execute);
     }
 
     @Test
     public void test2() {
-        SimpleAiMessage message = new SimpleAiMessage("hello, world!");
-        message.setModel("1651468516836098050");
-        String execute = AiUtils.execute(message, engineName, String.class);
+        Dict message = Dict.of("modelId", "1651468516836098050").set("message", "hello, world!");
+        String execute = AiUtils.execute(engineName, message, String.class);
         log.info(execute);
     }
 

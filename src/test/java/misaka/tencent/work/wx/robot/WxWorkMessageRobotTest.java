@@ -1,8 +1,8 @@
 package misaka.tencent.work.wx.robot;
 
 import artoria.bot.MessageBot;
-import artoria.data.json.support.FastJsonProvider;
-import artoria.exchange.JsonUtils;
+import artoria.data.json.JsonUtils;
+import artoria.data.json.support.FastJsonHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ public class WxWorkMessageRobotTest {
 
     @Test
     public void test1() {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         for (int i = 0; i < 10; i++) {
             Object send = wxWorkMessageBot.send("Hello, World! ");
             log.info("Send result: {}", send);

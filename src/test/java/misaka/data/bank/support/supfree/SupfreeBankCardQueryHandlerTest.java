@@ -2,7 +2,7 @@ package misaka.data.bank.support.supfree;
 
 import artoria.action.ActionUtils;
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import com.alibaba.fastjson.JSON;
 import misaka.data.bank.BankCard;
 import misaka.data.bank.BankCardQuery;
@@ -17,7 +17,7 @@ public class SupfreeBankCardQueryHandlerTest {
 
     @Test
     public void test1() {
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
         ActionUtils.registerHandler(BankCardQuery.class, new SupfreeBankCardActionHandler());
 
         BankCardQuery cardQuery = new BankCardQuery("622600687501042806");

@@ -2,7 +2,7 @@ package misaka.alibaba.pay;
 
 import artoria.data.AppType;
 import artoria.data.json.JsonUtils;
-import artoria.data.json.support.FastJsonProvider;
+import artoria.data.json.support.FastJsonHandler;
 import artoria.generator.id.IdUtils;
 import artoria.time.DateUtils;
 import com.alibaba.fastjson.JSON;
@@ -46,7 +46,7 @@ public class AliPayProviderTest {
         configs.add(aliPayConfig);
 
         new AliPayAutoConfiguration(aliPayProperties);
-        JsonUtils.setJsonProvider(new FastJsonProvider());
+        JsonUtils.registerHandler("default", new FastJsonHandler());
     }
 
     @Test
